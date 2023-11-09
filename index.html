@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #app {
+            max-width: 400px;
+            padding: 10px 20px;
+            border-radius: 5px;
+           
+        }
+        h1 {
+            text-align: center;
+            color: rgb(225, 162, 46);
+            margin-top: 0;
+        }
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+            padding: 5px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #f4cb36;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+        .checkbox-container {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .checkbox {
+            opacity: 0;
+            position: absolute;
+        }
+        .custom-checkbox {
+            position: relative;
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-color: #f4cb36;
+            border-radius: 3px;
+            border: 1px solid #f4cb36;
+        }
+        .checkmark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform-origin: bottom;
+            opacity: 0;
+        }
+        .checkbox:checked + .custom-checkbox .checkmark {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Todo.</h1>
+        <input type="text" id="taskInput" placeholder="Add a new task">
+        <button onclick="addTask()">Add Task</button>
+        <ul id="taskList">
+            <!-- Task items will be added here -->
+        </ul>
+    </div>
+
+    <script>
+        // Function to add a new task
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            const taskText = taskInput.value.trim();
+            if (taskText === '') return;
+
+            const taskList = document.getElementById('taskList');
+            const taskItem = document.createElement('li');
+            taskItem.innerHTML = `
+                <label class="checkbox-container">
+                    <input type="checkbox" class="checkbox" onchange="toggleTask(this)">
+                    <div class="custom-checkbox">
+                        <div class="checkmark"></div>
+                    </div>
+                </label>
+                <span class="task-label">${taskText}</span>
+                <button onclick="removeTask(this)">Remove</button>
+            `;
+            taskList.appendChild(taskItem);
+
+            // Clear the input field
+            taskInput.value = '';
+        }
+
+        // Function to toggle the completed state of a task
+        function toggleTask(checkbox) {
+            const taskItem = checkbox.parentElement.parentElement;
+            const taskLabel = taskItem.querySelector('.task-label');
+            taskLabel.classList.toggle('completed');
+        }
+
+        // Function to remove a task
+        function removeTask(button) {
+            const taskList = document.getElementById('taskList');
+            const taskItem = button.parentElement;
+            taskList.removeChild(taskItem);
+        }
+    </script>
+</body>
+</html>
